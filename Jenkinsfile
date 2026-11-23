@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        // Replace 'YOUR_REAL_DOCKERHUB_ID' with your actual Docker Hub username on your VM
-        DOCKER_USER = "YOUR_REAL_DOCKERHUB_ID"
+        // Replace 'anikethakre' with your actual Docker Hub username on your VM
+        DOCKER_USER = "anikethakre"
         IMAGE_NAME  = "aceest-fitness"
         APP_VERSION = "v1.0.${BUILD_NUMBER}"
     }
