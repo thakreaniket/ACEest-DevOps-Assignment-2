@@ -1,0 +1,114 @@
+# Version A (Control Group)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aceest-ab-version-a
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aceest-ab
+      variant: a
+  template:
+    metadata:
+      labels:
+        app: aceest-ab
+        variant: a
+    spec:
+      containers:
+      - name: aceest-app
+        image: yourdockerhubusername/aceest-fitness:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: APP_VERSION
+          value: "v1.0-VARIANT-A"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aceest-ab-svc-a
+spec:
+  selector:
+    app: aceest-ab
+    variant: a
+  ports:
+  - port: 80
+    targetPort: 5000
+---
+# Version B (Experiment Group)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aceest-ab-version-b
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aceest-ab
+      variant: b
+  template:
+    metadata:
+      labels:
+        app: aceest-ab
+        variant: b
+    spec:
+      containers:
+      - name: aceest-app
+        image: yourdockerhubusername/aceest-fitness:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: APP_VERSION
+          value: "v2.0-VARIANT-B"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aceest-ab-svc-b
+spec:
+  selector:
+    app: aceest-ab
+    variant: b
+  ports:
+  - port: 80
+    targetPort: 5000
+---
+# Ingress routing: Default -> Variant A; Header 'X-Variant: B' -> Variant B
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aceest-ab-ingress-main
+spec:
+  rules:
+  - host: aceest.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: aceest-ab-svc-a
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aceest-ab-ingress-canary
+  annotations:
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-by-header: "X-Variant"
+    nginx.ingress.kubernetes.io/canary-by-header-value: "B"
+spec:
+  rules:
+  - host: aceest.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: aceest-ab-svc-b
+            port:
+              number: 80
