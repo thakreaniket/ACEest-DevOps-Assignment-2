@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: aceest-app
-        image: yourdockerhubusername/aceest-fitness:latest
+        image: YOUR_REAL_DOCKERHUB_ID/aceest-fitness:latest
         ports:
         - containerPort: 5000
         env:
@@ -55,7 +55,7 @@ spec:
     spec:
       containers:
       - name: aceest-app
-        image: yourdockerhubusername/aceest-fitness:latest
+        image: YOUR_REAL_DOCKERHUB_ID/aceest-fitness:latest
         ports:
         - containerPort: 5000
         env:

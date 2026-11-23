@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
       - name: aceest-app
-        image: yourdockerhubusername/aceest-fitness:latest
+        image: YOUR_REAL_DOCKERHUB_ID/aceest-fitness:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
