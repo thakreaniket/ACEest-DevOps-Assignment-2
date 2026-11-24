@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Replace 'anikethakre' with your actual Docker Hub username on your VM
-        DOCKER_USER = "anikethakre"
+        DOCKER_USER = "anikethakre007"
         IMAGE_NAME  = "aceest-fitness"
         APP_VERSION = "v1.0.${BUILD_NUMBER}"
     }
